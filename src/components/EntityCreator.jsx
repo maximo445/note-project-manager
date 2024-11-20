@@ -1,11 +1,17 @@
 import { useContext, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { Context } from "./ContextProvider";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
 
 function EntityCreator({ type }) {
   const { dispatch } = useContext(Context);
+
+  const params = useParams();
+
   const dialogRef = useRef(null);
+
+  const [entityName, setEntityName] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const openDialog = () => {
@@ -20,9 +26,26 @@ function EntityCreator({ type }) {
 
   const createEntity = (e) => {
     e.preventDefault();
+    if (!entityName) return;
     if (type === "notebook") {
-      // continue here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      dispatch({ type: "addNotebook", payload: {} });
+      dispatch({
+        type: "addNotebook",
+        payLoad: { title: entityName, id: nanoid(), sectionIds: [] },
+      });
+
+      setEntityName("");
+    }
+    if (type === "section") {
+      if (!params?.notebookId) return;
+      dispatch({
+        type: "addSection",
+        payLoad: {
+          section: { title: entityName, id: nanoid(), pageIds: [] },
+          notebookId: params.notebookId,
+        },
+      });
+
+      setEntityName("");
     }
   };
 
@@ -32,9 +55,16 @@ function EntityCreator({ type }) {
     <div>
       <button onClick={openDialog}>+ {type}</button>
       <dialog ref={dialogRef}>
-        <form action="">
+        <form onSubmit={createEntity}>
           <h1>Create a new {type}</h1>
-          <input type="text" name="" id="" placeholder="Notebook name" />
+          <input
+            value={entityName}
+            onChange={(e) => setEntityName(e.target.value)}
+            type="text"
+            name=""
+            id=""
+            placeholder={`${type} name`}
+          />
           <button onClick={closeDialog} type="submit">
             CREATE
           </button>
@@ -46,10 +76,6 @@ function EntityCreator({ type }) {
 
 EntityCreator.propTypes = {
   type: PropTypes.string.isRequired,
-};
-
-EntityCreator.defaultProps = {
-  type: "no-prop",
 };
 
 export default EntityCreator;

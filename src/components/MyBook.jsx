@@ -5,15 +5,15 @@ import EntityCreator from "./EntityCreator";
 
 function MyBook() {
   const { state } = useContext(Context);
-  const { id } = useParams();
+  const { notebookId } = useParams();
 
-  const project = state.notebooks.byId[id];
+  const project = state.notebooks.byId[notebookId];
 
   const sections = project.sectionIds.map((id) => {
     console.log({ section: id });
     const section = state.sections.byId[id];
     return (
-      <Link key={id} to={`/section/${id}`}>
+      <Link key={id} to={`/notebook/${notebookId}/section/${id}`}>
         {section.title}
       </Link>
     );
@@ -21,7 +21,9 @@ function MyBook() {
 
   return (
     <div>
+      <h1>my notebook</h1>
       <div>{sections}</div>
+      <EntityCreator type={"section"} />
     </div>
   );
 }

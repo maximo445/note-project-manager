@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Context } from "./ContextProvider";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import EntityCreator from "./EntityCreator";
 
 function NoteBooks() {
@@ -17,6 +17,7 @@ function NoteBooks() {
 
   return (
     <div>
+      <Outlet />
       <div>{notebooks}</div>
       <EntityCreator type={"notebook"} />
     </div>

@@ -4,9 +4,9 @@ import { Context } from "./ContextProvider";
 
 function Section() {
   const { state } = useContext(Context);
-  const { id } = useParams();
+  const { sectionId } = useParams();
 
-  const section = state.sections.byId[id];
+  const section = state.sections.byId[sectionId];
 
   const pages = section.pageIds.map((id) => {
     const page = state.pages.byId[id];
@@ -17,7 +17,7 @@ function Section() {
     );
   });
 
-  console.log(section);
+  console.log(section.title);
 
   return <div>{pages}</div>;
 }

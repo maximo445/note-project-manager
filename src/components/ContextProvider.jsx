@@ -2,10 +2,45 @@ import { createContext, useReducer } from "react";
 
 export const Context = createContext();
 
+// { title: entityName, id: nanoid(), sectionIds: [] }
+
 const reducer = (state, action) => {
   switch (action.type) {
-    case "addNoteBook":
-      return { ...state, notebooks: [] };
+    case "addNotebook":
+      return {
+        ...state,
+        notebooks: {
+          byId: {
+            ...state.notebooks.byId,
+            [action.payLoad.id]: action.payLoad,
+          },
+          allIds: [...state.notebooks.allIds, action.payLoad.id],
+        },
+      };
+    case "addSection":
+      return {
+        ...state,
+        notebooks: {
+          byId: {
+            ...state.notebooks.byId,
+            [action.payLoad.notebookId]: {
+              ...state.notebooks.byId[action.payLoad.notebookId],
+              sectionIds: [
+                ...state.notebooks.byId[action.payLoad.notebookId].sectionIds,
+                action.payLoad.section.id,
+              ],
+            },
+          },
+          allIds: [...state.notebooks.allIds, action.payLoad.id],
+        },
+        sections: {
+          byId: {
+            ...state.sections.byId,
+            [action.payLoad.section.id]: action.payLoad.section,
+          },
+          allIds: [...state.sections.allIds, action.payLoad.section.id],
+        },
+      };
   }
 };
 

@@ -9,12 +9,15 @@ import Page from "./components/Page";
 function App() {
   return (
     <ContextProvider>
-      <Header></Header>
+      <Header />
       <Routes>
         <Route path="/" element={<NoteBooks />} />
-        <Route path="/notebook/:id" element={<MyBook />} />
-        <Route path="/section/:id" element={<Section />} />
-        <Route path="/page/:id" element={<Page />} />
+        <Route path="notebook/:notebookId" element={<MyBook />} />
+        <Route
+          path="notebook/:notebookID/section/:sectionId/"
+          element={<Section />}
+        />
+        <Route path="page/:id" element={<Page />} />
       </Routes>
     </ContextProvider>
   );

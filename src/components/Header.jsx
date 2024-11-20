@@ -4,7 +4,7 @@ import { Context } from "./ContextProvider";
 function Header() {
   const { state } = useContext(Context);
 
-  console.log(state.notebooks.byId[6776]);
+  console.log(state.notebooks);
 
   return (
     <div>
