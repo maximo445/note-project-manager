@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "./ContextProvider";
+import EntityCreator from "./EntityCreator";
 
 function MyBook() {
   const { state } = useContext(Context);
@@ -18,7 +19,11 @@ function MyBook() {
     );
   });
 
-  return <div>{sections}</div>;
+  return (
+    <div>
+      <div>{sections}</div>
+    </div>
+  );
 }
 
 export default MyBook;
