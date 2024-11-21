@@ -1,48 +1,58 @@
 import { createContext, useReducer } from "react";
 
+import { produce } from "immer";
+
 export const Context = createContext();
 
-// { title: entityName, id: nanoid(), sectionIds: [] }
-
-const reducer = (state, action) => {
+const notebooksReducer = produce((state, action) => {
   switch (action.type) {
     case "addNotebook":
-      return {
-        ...state,
-        notebooks: {
-          byId: {
-            ...state.notebooks.byId,
-            [action.payLoad.id]: action.payLoad,
-          },
-          allIds: [...state.notebooks.allIds, action.payLoad.id],
-        },
-      };
-    case "addSection":
-      return {
-        ...state,
-        notebooks: {
-          byId: {
-            ...state.notebooks.byId,
-            [action.payLoad.notebookId]: {
-              ...state.notebooks.byId[action.payLoad.notebookId],
-              sectionIds: [
-                ...state.notebooks.byId[action.payLoad.notebookId].sectionIds,
-                action.payLoad.section.id,
-              ],
-            },
-          },
-          allIds: [...state.notebooks.allIds, action.payLoad.id],
-        },
-        sections: {
-          byId: {
-            ...state.sections.byId,
-            [action.payLoad.section.id]: action.payLoad.section,
-          },
-          allIds: [...state.sections.allIds, action.payLoad.section.id],
-        },
-      };
+      state.byId[action.payLoad.id] = action.payLoad;
+      state.allIds.push(action.payLoad.id);
+      break;
+    case "addSection": {
+      const { notebookId, section } = action.payLoad;
+      state.byId[notebookId].sectionIds.push(section.id);
+      break;
+    }
+    default:
+      break;
   }
-};
+});
+
+const sectionsReducer = produce((state, action) => {
+  switch (action.type) {
+    case "addSection":
+      state.byId[action.payLoad.section.id] = action.payLoad.section;
+      state.allIds.push(action.payLoad.section.id);
+      break;
+    case "addPage":
+      {
+        const { sectionId, page } = action.payLoad;
+        state.byId[sectionId].pageIds.push(page.id);
+      }
+      break;
+    default:
+      break;
+  }
+});
+
+const pagesReducer = produce((state, action) => {
+  switch (action.type) {
+    case "addPage":
+      state.byId[action.payLoad.page.id] = action.payLoad.page;
+      state.allIds.push(action.payLoad.page.id);
+      break;
+    default:
+      break;
+  }
+});
+
+const rootReducer = (state, action) => ({
+  notebooks: notebooksReducer(state.notebooks, action),
+  sections: sectionsReducer(state.sections, action),
+  pages: pagesReducer(state.pages, action),
+});
 
 const initialState = {
   notebooks: {
@@ -79,7 +89,7 @@ const initialState = {
 };
 
 function ContextProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(rootReducer, initialState);
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
   );

@@ -10,7 +10,6 @@ function MyBook() {
   const project = state.notebooks.byId[notebookId];
 
   const sections = project.sectionIds.map((id) => {
-    console.log({ section: id });
     const section = state.sections.byId[id];
     return (
       <Link key={id} to={`/notebook/${notebookId}/section/${id}`}>

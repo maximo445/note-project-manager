@@ -4,9 +4,11 @@ import { Context } from "./ContextProvider";
 
 function Page() {
   const { state } = useContext(Context);
-  const { id } = useParams();
+  const { pageId } = useParams();
 
-  const page = state.pages.byId[id];
+  const page = state.pages.byId[pageId];
+
+  console.log({ pageId, page });
 
   return (
     <div>

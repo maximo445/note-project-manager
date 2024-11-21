@@ -4,6 +4,16 @@ import { Context } from "./ContextProvider";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
 
+function formatDate(date) {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
+}
+
 function EntityCreator({ type }) {
   const { dispatch } = useContext(Context);
 
@@ -12,6 +22,8 @@ function EntityCreator({ type }) {
   const dialogRef = useRef(null);
 
   const [entityName, setEntityName] = useState("");
+  const [pageBody, setPageBody] = useState("");
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const openDialog = () => {
@@ -47,6 +59,26 @@ function EntityCreator({ type }) {
 
       setEntityName("");
     }
+    if (type === "page") {
+      if (!params?.sectionId) return;
+
+      const date = new Date("2024-11-16");
+      const dateFormated = formatDate(date);
+
+      dispatch({
+        type: "addPage",
+        payLoad: {
+          page: {
+            id: nanoid(),
+            title: entityName,
+            createdAt: dateFormated,
+            body: pageBody,
+            pageIds: [],
+          },
+          sectionId: params.sectionId,
+        },
+      });
+    }
   };
 
   if (type === "no-prop") <div>No props passed...</div>;
@@ -65,6 +97,16 @@ function EntityCreator({ type }) {
             id=""
             placeholder={`${type} name`}
           />
+          {type === "page" && (
+            <textarea
+              value={pageBody}
+              onChange={(e) => setPageBody(e.target.value)}
+              type="text"
+              name=""
+              id=""
+              placeholder={`${type} name`}
+            />
+          )}
           <button onClick={closeDialog} type="submit">
             CREATE
           </button>

@@ -14,10 +14,13 @@ function App() {
         <Route path="/" element={<NoteBooks />} />
         <Route path="notebook/:notebookId" element={<MyBook />} />
         <Route
-          path="notebook/:notebookID/section/:sectionId/"
+          path="notebook/:notebookId/section/:sectionId/"
           element={<Section />}
         />
-        <Route path="page/:id" element={<Page />} />
+        <Route
+          path="notebook/:notebookId/section/:sectionId/page/:pageId"
+          element={<Page />}
+        />
       </Routes>
     </ContextProvider>
   );
