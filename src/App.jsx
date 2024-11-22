@@ -9,18 +9,19 @@ import Page from "./components/Page";
 function App() {
   return (
     <ContextProvider>
-      <Header />
       <Routes>
-        <Route path="/" element={<NoteBooks />} />
-        <Route path="notebook/:notebookId" element={<MyBook />} />
-        <Route
-          path="notebook/:notebookId/section/:sectionId/"
-          element={<Section />}
-        />
-        <Route
-          path="notebook/:notebookId/section/:sectionId/page/:pageId"
-          element={<Page />}
-        />
+        <Route path="/" element={<Header />}>
+          <Route path="/" element={<NoteBooks />} />
+          <Route path="notebook/:notebookId" element={<MyBook />} />
+          <Route
+            path="notebook/:notebookId/section/:sectionId/"
+            element={<Section />}
+          />
+          <Route
+            path="notebook/:notebookId/section/:sectionId/page/:pageId"
+            element={<Page />}
+          />
+        </Route>
       </Routes>
     </ContextProvider>
   );

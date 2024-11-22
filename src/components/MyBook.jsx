@@ -20,7 +20,6 @@ function MyBook() {
 
   return (
     <div>
-      <h1>my notebook</h1>
       <div>{sections}</div>
       <EntityCreator type={"section"} />
     </div>
