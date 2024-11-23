@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { Context } from "./ContextProvider";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
+import Searcher from "./Searcher";
 
 function Header() {
-  const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const { state } = useContext(Context);
   const { notebookId, sectionId, pageId } = useParams();
@@ -12,17 +12,6 @@ function Header() {
   function handleBacking() {
     navigate(-1);
   }
-
-  let searcher = (
-    <div>
-      <button onClick={() => setIsSearching(false)}>back</button>
-      <input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        type="text"
-      />
-    </div>
-  );
 
   let headerInfo = (
     <span>
@@ -64,17 +53,19 @@ function Header() {
 
   return (
     <div>
-      <header>
+      <header className="bg-slate-800 text-slate-50">
         {isSearching ? (
-          searcher
+          <Searcher handleSetIsSearching={setIsSearching} />
         ) : (
           <>
             {headerInfo}
-            <span onClick={() => setIsSearching(true)}>search</span>
+            {!pageId && (
+              <span onClick={() => setIsSearching(true)}>search</span>
+            )}
           </>
         )}
       </header>
-      <Outlet />
+      {!isSearching && <Outlet />}
     </div>
   );
 }

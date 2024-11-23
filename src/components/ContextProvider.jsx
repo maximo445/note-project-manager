@@ -58,27 +58,27 @@ const initialState = {
   notebooks: {
     byId: {
       987: {
-        id: 987,
+        id: "987",
         title: "tempNoteBook",
-        sectionIds: [123], // References to sections
+        sectionIds: ["123"], // References to sections
       },
     },
-    allIds: [987], // Keeps track of all notebook IDs
+    allIds: ["987"], // Keeps track of all notebook IDs
   },
   sections: {
     byId: {
       123: {
-        id: 123,
+        id: "123",
         title: "testSection",
-        pageIds: [456], // References to pages
+        pageIds: ["456"], // References to pages
       },
     },
-    allIds: [123], // Keeps track of all section IDs
+    allIds: ["123"], // Keeps track of all section IDs
   },
   pages: {
     byId: {
       456: {
-        id: 456,
+        id: "456",
         title: "tempPage",
         createdAt: "11/18/2024",
         body: "My first publication. Lorem Ipsum. I dont beleive in defeat!",

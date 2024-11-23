@@ -16,8 +16,8 @@ function NoteBooks() {
   });
 
   return (
-    <div>
-      <Outlet />
+    <div className="h-screen">
+      {/* <Outlet /> */}
       <div>{notebooks}</div>
       <EntityCreator type={"notebook"} />
     </div>

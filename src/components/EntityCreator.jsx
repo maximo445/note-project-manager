@@ -62,7 +62,7 @@ function EntityCreator({ type }) {
     if (type === "page") {
       if (!params?.sectionId) return;
 
-      const date = new Date("2024-11-16");
+      const date = new Date();
       const dateFormated = formatDate(date);
 
       dispatch({
