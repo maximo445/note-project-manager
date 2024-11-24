@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "./ContextProvider";
 import EntityCreator from "./EntityCreator";
