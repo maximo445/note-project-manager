@@ -10,6 +10,7 @@ function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
 
   const goToSearchedItem = useCallback(
     (destination) => {
+      console.log(destination);
       handleSetIsSearching();
       setQuery("");
       handleSetSearchResults([]);
@@ -47,7 +48,6 @@ function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
       const sectionLinks = sectionsIds.map((sectionId) => {
         // Filter notebooks to find the one containing the current sectionId
         const noteBookId = notebooks.allIds.filter((id) => {
-          console.log({ myNoteBook: notebooks.byId[id] });
           return notebooks.byId[id].sectionIds.includes(sectionId);
         });
 

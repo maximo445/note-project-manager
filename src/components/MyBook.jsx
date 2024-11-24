@@ -19,8 +19,8 @@ function MyBook() {
   });
 
   return (
-    <div className="h-[calc(100vh-80px)] flex flex-col justify-between pt-8 bg-red-400">
-      <div className="pl-10">{sections}</div>
+    <div className="h-[calc(100vh-80px)] flex flex-col justify-between pt-8">
+      <div className="flex flex-col gap-3 pl-10">{sections}</div>
       <EntityCreator type={"section"} />
     </div>
   );

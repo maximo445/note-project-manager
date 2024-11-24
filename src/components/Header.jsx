@@ -16,7 +16,7 @@ function Header() {
 
   function closeSearch() {
     setIsSearching(false);
-    searchResults([]);
+    setSearchResults([]);
   }
 
   let headerInfo = (
@@ -32,7 +32,7 @@ function Header() {
         <button className="text-3xl" onClick={handleBacking}>
           {"<"}
         </button>
-        <h1>{state.notebooks.byId[notebookId].title}</h1>
+        <h1 className="text-2xl">{state.notebooks.byId[notebookId].title}</h1>
       </span>
     );
   }
@@ -57,9 +57,11 @@ function Header() {
 
   if (pageId) {
     headerInfo = (
-      <span>
-        <button onClick={handleBacking}>back</button>
-        <span>
+      <span className="flex justify-between w-full">
+        <button className="text-3xl" onClick={handleBacking}>
+          {"<"}
+        </button>
+        <span className="flex gap-4">
           <button>undo</button>
           <button>redo</button>
         </span>
@@ -86,7 +88,7 @@ function Header() {
       </header>
       {!isSearching && <Outlet />}
       {isSearching && (
-        <div className="h-[calc(100vh-80px)] flex flex-col justify-between pt-8 bg-slate-800 text-slate-50">
+        <div className="h-[calc(100vh-100px)] flex flex-col justify-between pt-8 bg-slate-800 text-slate-50">
           <ul className="pl-10">{searchResults}</ul>
         </div>
       )}

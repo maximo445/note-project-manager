@@ -88,7 +88,7 @@ function EntityCreator({ type }) {
   return (
     <div>
       <button
-        className="flex bg-slate-600 w-screen p-5 rounded-t-2xl translate-y-1 text-slate-50"
+        className="flex bg-slate-600 w-full p-5 rounded-t-2xl translate-y-1 text-slate-50"
         onClick={openDialog}
       >
         + {type}
