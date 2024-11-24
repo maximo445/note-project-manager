@@ -56,7 +56,12 @@ const rootReducer = (state, action) => ({
 
 let initialState = null;
 
-const localStorageState = localStorage.getItem("state");
+let localStorageState = localStorage.getItem("state");
+
+if (localStorageState.length <= 15) {
+  localStorage.clear();
+  localStorageState = null;
+}
 
 !localStorageState
   ? (initialState = {
