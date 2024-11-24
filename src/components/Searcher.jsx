@@ -3,19 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "./ContextProvider";
 import PropTypes from "prop-types";
 
-function Searcher({ handleSetIsSearching }) {
+function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
   const [query, setQuery] = useState("");
   const { state } = useContext(Context);
-  const [searchResults, setSearchResults] = useState();
   const navigate = useNavigate();
 
   const goToSearchedItem = useCallback(
     (destination) => {
-      handleSetIsSearching(false);
+      handleSetIsSearching();
       setQuery("");
+      handleSetSearchResults([]);
       navigate(destination);
     },
-    [handleSetIsSearching, navigate, setQuery]
+    [handleSetIsSearching, handleSetSearchResults, navigate]
   );
 
   useEffect(() => {
@@ -37,9 +37,11 @@ function Searcher({ handleSetIsSearching }) {
       );
 
       const notebookLinks = notebooksIds.map((id) => (
-        <button key={id} onClick={() => goToSearchedItem(`/notebook/${id}`)}>
-          {notebooks.byId[id]?.title || "Untitle Notebook"}
-        </button>
+        <li key={id}>
+          <button onClick={() => goToSearchedItem(`/notebook/${id}`)}>
+            {notebooks.byId[id]?.title || "Untitle Notebook"}
+          </button>
+        </li>
       ));
 
       const sectionLinks = sectionsIds.map((sectionId) => {
@@ -56,54 +58,46 @@ function Searcher({ handleSetIsSearching }) {
         }
 
         return (
-          <button
-            key={`${noteBookId[0]}-${sectionId}`}
-            onClick={() =>
-              goToSearchedItem(
-                `/notebook/${noteBookId[0]}/section/${sectionId}`
-              )
-            }
-          >
-            {sections.byId[sectionId]?.title || "Untitled Section"}
-          </button>
+          <li key={`${noteBookId[0]}-${sectionId}`}>
+            <button
+              onClick={() =>
+                goToSearchedItem(
+                  `/notebook/${noteBookId[0]}/section/${sectionId}`
+                )
+              }
+            >
+              {sections.byId[sectionId]?.title || "Untitled Section"}
+            </button>
+          </li>
         );
       });
 
-      console.log({ notebooksIds, sectionsIds, pagesIds });
-      console.log({ notebookLinks });
-
-      return [...notebookLinks, ...sectionLinks];
+      query.length > 0
+        ? handleSetSearchResults([...notebookLinks, ...sectionLinks])
+        : handleSetSearchResults([]);
     }
-    if (query.length >= 1) setSearchResults(processQuery());
-  }, [
-    goToSearchedItem,
-    handleSetIsSearching,
-    query,
-    setSearchResults,
-    state.notebooks,
-    state.notebooks.allIds,
-    state.notebooks.byId,
-    state.pages,
-    state.sections,
-  ]);
+    processQuery();
+  }, [query, state]);
 
   return (
     <div>
-      <div>
-        <button onClick={() => handleSetIsSearching(false)}>back</button>
+      <div className="flex gap-5">
+        <button onClick={() => handleSetIsSearching()}>back</button>
         <input
+          className="bg-transparent focus:outline-none focus:ring-0"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           type="text"
+          placeholder="Search"
         />
       </div>
-      {searchResults}
     </div>
   );
 }
 
 Searcher.propTypes = {
   handleSetIsSearching: PropTypes.func.isRequired,
+  handleSetSearchResults: PropTypes.func.isRequired,
 };
 
 export default Searcher;

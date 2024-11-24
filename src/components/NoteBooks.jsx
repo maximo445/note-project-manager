@@ -16,9 +16,9 @@ function NoteBooks() {
   });
 
   return (
-    <div className="h-screen">
+    <div className="h-[calc(100vh-80px)] flex flex-col justify-between pt-8 bg-red-400">
       {/* <Outlet /> */}
-      <div>{notebooks}</div>
+      <div className="pl-10">{notebooks}</div>
       <EntityCreator type={"notebook"} />
     </div>
   );

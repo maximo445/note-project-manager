@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Context } from "./ContextProvider";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
+import NoFormDialog from "./NoFormDialog";
 
 function formatDate(date) {
   const options = {
@@ -16,29 +17,24 @@ function formatDate(date) {
 
 function EntityCreator({ type }) {
   const { dispatch } = useContext(Context);
-
   const params = useParams();
-
   const dialogRef = useRef(null);
 
   const [entityName, setEntityName] = useState("");
   const [pageBody, setPageBody] = useState("");
-
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const openDialog = () => {
-    setIsDialogOpen(true);
-    dialogRef.current?.showModal();
+    setIsDialogOpen(() => true);
+    setTimeout(() => dialogRef.current?.showModal(), 0);
   };
 
   const closeDialog = () => {
-    setIsDialogOpen(false);
     dialogRef.current?.close();
+    setIsDialogOpen(() => false);
   };
 
-  const createEntity = (e) => {
-    e.preventDefault();
-    if (!entityName) return;
+  const createEntity = () => {
     if (type === "notebook") {
       dispatch({
         type: "addNotebook",
@@ -79,39 +75,37 @@ function EntityCreator({ type }) {
         },
       });
     }
+    setIsDialogOpen(() => false);
+    setEntityName("");
+    setPageBody("");
+    setTimeout(() => {
+      dialogRef.current?.close();
+    }, 0);
   };
 
   if (type === "no-prop") <div>No props passed...</div>;
 
   return (
     <div>
-      <button onClick={openDialog}>+ {type}</button>
-      <dialog ref={dialogRef}>
-        <form onSubmit={createEntity}>
-          <h1>Create a new {type}</h1>
-          <input
-            value={entityName}
-            onChange={(e) => setEntityName(e.target.value)}
-            type="text"
-            name=""
-            id=""
-            placeholder={`${type} name`}
-          />
-          {type === "page" && (
-            <textarea
-              value={pageBody}
-              onChange={(e) => setPageBody(e.target.value)}
-              type="text"
-              name=""
-              id=""
-              placeholder={`${type} name`}
-            />
-          )}
-          <button onClick={closeDialog} type="submit">
-            CREATE
-          </button>
-        </form>
-      </dialog>
+      <button
+        className="flex bg-slate-600 w-screen p-5 rounded-t-2xl translate-y-1 text-slate-50"
+        onClick={openDialog}
+      >
+        + {type}
+      </button>
+
+      {isDialogOpen && (
+        <NoFormDialog
+          dialogRef={dialogRef}
+          pageBody={pageBody}
+          setPageBody={setPageBody}
+          entityName={entityName}
+          setEntityName={setEntityName}
+          createEntity={createEntity}
+          type={type}
+          closeDialog={closeDialog}
+        />
+      )}
     </div>
   );
 }

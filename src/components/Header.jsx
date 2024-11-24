@@ -5,6 +5,7 @@ import Searcher from "./Searcher";
 
 function Header() {
   const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
   const { state } = useContext(Context);
   const { notebookId, sectionId, pageId } = useParams();
   const navigate = useNavigate();
@@ -13,8 +14,13 @@ function Header() {
     navigate(-1);
   }
 
+  function closeSearch() {
+    setIsSearching(false);
+    searchResults([]);
+  }
+
   let headerInfo = (
-    <span>
+    <span className="flex justify-between gap-6">
       <p>MB</p>
       <h1>ProjeNote</h1>
     </span>
@@ -22,8 +28,10 @@ function Header() {
 
   if (notebookId) {
     headerInfo = (
-      <span>
-        <button onClick={handleBacking}>back</button>
+      <span className="flex gap-2.5 justify-center items-center">
+        <button className="text-3xl" onClick={handleBacking}>
+          {"<"}
+        </button>
         <h1>{state.notebooks.byId[notebookId].title}</h1>
       </span>
     );
@@ -32,9 +40,17 @@ function Header() {
   if (sectionId) {
     headerInfo = (
       <span>
-        <button onClick={handleBacking}>back</button>
-        <h1>{state.sections.byId[sectionId].title}</h1>
-        <p>{state.notebooks.byId[notebookId].title}</p>
+        <div className="flex gap-5">
+          <button className="text-3xl" onClick={handleBacking}>
+            {"<"}
+          </button>
+          <div>
+            <h1 className="text-2xl">{state.sections.byId[sectionId].title}</h1>
+            <p className="text-xs text-slate-500">
+              {state.notebooks.byId[notebookId].title}
+            </p>
+          </div>
+        </div>
       </span>
     );
   }
@@ -53,9 +69,12 @@ function Header() {
 
   return (
     <div>
-      <header className="bg-slate-800 text-slate-50">
+      <header className="flex justify-between items-center h-20 py-5 px-10 bg-slate-800 text-slate-50">
         {isSearching ? (
-          <Searcher handleSetIsSearching={setIsSearching} />
+          <Searcher
+            handleSetIsSearching={closeSearch}
+            handleSetSearchResults={setSearchResults}
+          />
         ) : (
           <>
             {headerInfo}
@@ -66,6 +85,11 @@ function Header() {
         )}
       </header>
       {!isSearching && <Outlet />}
+      {isSearching && (
+        <div className="h-[calc(100vh-80px)] flex flex-col justify-between pt-8 bg-slate-800 text-slate-50">
+          <ul className="pl-10">{searchResults}</ul>
+        </div>
+      )}
     </div>
   );
 }
