@@ -58,11 +58,6 @@ let initialState = null;
 
 let localStorageState = localStorage.getItem("state");
 
-if (localStorageState.length <= 15) {
-  localStorage.clear();
-  localStorageState = null;
-}
-
 !localStorageState
   ? (initialState = {
       notebooks: {
