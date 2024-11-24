@@ -3,6 +3,9 @@ import { useContext } from "react";
 import { Context } from "./ContextProvider";
 import EntityCreator from "./EntityCreator";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
+
 function MyBook() {
   const { state } = useContext(Context);
   const { notebookId } = useParams();
@@ -12,16 +15,27 @@ function MyBook() {
   const sections = project.sectionIds.map((id) => {
     const section = state.sections.byId[id];
     return (
-      <Link key={id} to={`/notebook/${notebookId}/section/${id}`}>
-        {section.title}
-      </Link>
+      <li key={id} className="flex gap-3 items-center">
+        <FontAwesomeIcon
+          icon={faCircle}
+          className="text-yellow-500"
+        ></FontAwesomeIcon>
+        <Link to={`/note-project-manager/notebook/${notebookId}/section/${id}`}>
+          {section.title}
+        </Link>
+      </li>
     );
   });
 
   return (
-    <div className="h-[calc(100vh-80px)] flex flex-col justify-between pt-8">
-      <div className="flex flex-col gap-3 pl-10">{sections}</div>
-      <EntityCreator type={"section"} />
+    <div>
+      <div>
+        <p className="pl-10 pt-1">SECTIONS</p>
+      </div>
+      <div className="h-[calc(100vh-114px)] flex flex-col justify-between pt-8">
+        <ul className="flex flex-col gap-3 pl-10">{sections}</ul>
+        <EntityCreator type={"section"} />
+      </div>
     </div>
   );
 }

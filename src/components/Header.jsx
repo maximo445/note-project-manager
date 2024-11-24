@@ -3,6 +3,9 @@ import { Context } from "./ContextProvider";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import Searcher from "./Searcher";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
 function Header() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
@@ -81,7 +84,9 @@ function Header() {
           <>
             {headerInfo}
             {!pageId && (
-              <span onClick={() => setIsSearching(true)}>search</span>
+              <span onClick={() => setIsSearching(true)}>
+                <FontAwesomeIcon icon={faSearch} />
+              </span>
             )}
           </>
         )}

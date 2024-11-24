@@ -39,7 +39,11 @@ function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
 
       const notebookLinks = notebooksIds.map((id) => (
         <li key={id}>
-          <button onClick={() => goToSearchedItem(`/notebook/${id}`)}>
+          <button
+            onClick={() =>
+              goToSearchedItem(`/note-project-manager/notebook/${id}`)
+            }
+          >
             {notebooks.byId[id]?.title || "Untitle Notebook"}
           </button>
         </li>
@@ -62,7 +66,7 @@ function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
             <button
               onClick={() =>
                 goToSearchedItem(
-                  `/notebook/${noteBookId[0]}/section/${sectionId}`
+                  `/note-project-manager/notebook/${noteBookId[0]}/section/${sectionId}`
                 )
               }
             >

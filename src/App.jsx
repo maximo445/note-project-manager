@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import ContextProvider from "./components/ContextProvider";
 import Header from "./components/Header";
 import NoteBooks from "./components/NoteBooks";
@@ -9,9 +9,10 @@ import Page from "./components/Page";
 function App() {
   return (
     <ContextProvider>
+      {/* <HashRouter> */}
       <Routes>
-        <Route path="/" element={<Header />}>
-          <Route path="/" element={<NoteBooks />} />
+        <Route path="/note-project-manager" element={<Header />}>
+          <Route index element={<NoteBooks />} />
           <Route path="notebook/:notebookId" element={<MyBook />} />
           <Route
             path="notebook/:notebookId/section/:sectionId/"
@@ -23,6 +24,7 @@ function App() {
           />
         </Route>
       </Routes>
+      {/* </HashRouter> */}
     </ContextProvider>
   );
 }

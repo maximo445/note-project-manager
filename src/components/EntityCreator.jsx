@@ -83,12 +83,13 @@ function EntityCreator({ type }) {
     }, 0);
   };
 
-  if (type === "no-prop") <div>No props passed...</div>;
+  if (type === "no-prop")
+    <div className="text-slate-900">No props passed...</div>;
 
   return (
     <div>
       <button
-        className="flex bg-slate-600 w-full p-5 rounded-t-2xl translate-y-1 text-slate-50"
+        className="flex bg-slate-600 w-full p-5 pb-20 sm:pb-5 rounded-t-2xl translate-y-1 text-slate-50"
         onClick={openDialog}
       >
         + {type}
