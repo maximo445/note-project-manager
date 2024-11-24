@@ -54,45 +54,83 @@ const rootReducer = (state, action) => ({
   pages: pagesReducer(state.pages, action),
 });
 
-let initialState = null;
+const localStorageState = localStorage.getItem("state");
 
-let localStorageState = localStorage.getItem("state");
-
-!localStorageState
-  ? (initialState = {
+if (!localStorageState)
+  localStorage.setItem(
+    "state",
+    JSON.stringify({
       notebooks: {
         byId: {
-          987: {
-            id: "987",
-            title: "tempNoteBook",
-            sectionIds: ["123"], // References to sections
-          },
+          // 987: {
+          //   id: "987",
+          //   title: "tempNoteBook",
+          //   sectionIds: ["123"], // References to sections
+          // },
         },
-        allIds: ["987"], // Keeps track of all notebook IDs
+        allIds: [], // Keeps track of all notebook IDs 987
       },
       sections: {
         byId: {
-          123: {
-            id: "123",
-            title: "testSection",
-            pageIds: ["456"], // References to pages
-          },
+          // 123: {
+          //   id: "123",
+          //   title: "testSection",
+          //   pageIds: ["456"], // References to pages
+          // },
         },
-        allIds: ["123"], // Keeps track of all section IDs
+        allIds: [], // Keeps track of all section IDs 123
       },
       pages: {
         byId: {
-          456: {
-            id: "456",
-            title: "tempPage",
-            createdAt: "11/18/2024",
-            body: "My first publication. Lorem Ipsum. I dont beleive in defeat!",
-          },
+          // 456: {
+          //   id: "456",
+          //   title: "tempPage",
+          //   createdAt: "11/18/2024",
+          //   body: "My first publication. Lorem Ipsum. I dont beleive in defeat!",
+          // },
         },
-        allIds: [456], // Keeps track of all page IDs
+        allIds: [], // Keeps track of all page IDs 456
       },
     })
-  : (initialState = JSON.parse(localStorageState));
+  );
+
+const initialState = JSON.parse(localStorage.getItem("state"));
+
+// !localStorageState
+//   ? (initialState = {
+//       notebooks: {
+//         byId: {
+//           987: {
+//             id: "987",
+//             title: "tempNoteBook",
+//             sectionIds: ["123"], // References to sections
+//           },
+//         },
+//         allIds: ["987"], // Keeps track of all notebook IDs
+//       },
+//       sections: {
+//         byId: {
+//           123: {
+//             id: "123",
+//             title: "testSection",
+//             pageIds: ["456"], // References to pages
+//           },
+//         },
+//         allIds: ["123"], // Keeps track of all section IDs
+//       },
+//       pages: {
+//         byId: {
+//           456: {
+//             id: "456",
+//             title: "tempPage",
+//             createdAt: "11/18/2024",
+//             body: "My first publication. Lorem Ipsum. I dont beleive in defeat!",
+//           },
+//         },
+//         allIds: [456], // Keeps track of all page IDs
+//       },
+//     })
+//   : (initialState = JSON.parse(localStorageState));
 
 function ContextProvider({ children }) {
   const [state, dispatch] = useReducer(rootReducer, initialState);

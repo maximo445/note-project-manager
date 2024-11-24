@@ -9,6 +9,8 @@ import { faBook } from "@fortawesome/free-solid-svg-icons";
 function NoteBooks() {
   const { state } = useContext(Context);
 
+  console.log({ firstState: state });
+
   const notebooks = state.notebooks.allIds.map((id) => {
     const noteBook = state.notebooks.byId[id];
     return (
@@ -20,6 +22,8 @@ function NoteBooks() {
       </li>
     );
   });
+
+  console.log(notebooks);
 
   return (
     <div className="h-[calc(100vh-80px)] flex flex-col justify-between pt-8">
