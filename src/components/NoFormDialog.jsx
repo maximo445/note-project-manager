@@ -13,7 +13,7 @@ function NoFormDialog({
   return createPortal(
     <dialog
       ref={dialogRef}
-      className={`flex justify-center items-center h-52 w-72 bg-slate-800 text-slate-50 rounded-xl  ${
+      className={`backdrop:bg-stone-900/90 flex justify-center items-center h-52 w-72 bg-slate-800 text-slate-50 rounded-xl  ${
         type === "page" ? "h-72 w-96" : ""
       }`}
     >
