@@ -9,8 +9,6 @@ import { faBook } from "@fortawesome/free-solid-svg-icons";
 function NoteBooks() {
   const { state } = useContext(Context);
 
-  console.log({ firstState: state });
-
   const notebooks = state.notebooks.allIds.map((id) => {
     const noteBook = state.notebooks.byId[id];
     return (

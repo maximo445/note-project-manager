@@ -30,18 +30,24 @@ function Header() {
   );
 
   if (notebookId) {
-    headerInfo = (
+    const isIdValid = state.notebooks.allIds.includes(notebookId);
+    headerInfo = isIdValid ? (
       <span className="flex gap-2.5 justify-center items-center">
         <button className="text-3xl" onClick={handleBacking}>
           {"<"}
         </button>
         <h1 className="text-2xl">{state.notebooks.byId[notebookId].title}</h1>
       </span>
+    ) : (
+      <div>
+        <h1>Error</h1>
+      </div>
     );
   }
 
   if (sectionId) {
-    headerInfo = (
+    const isValidSectionId = state.sections.allIds.includes(sectionId);
+    headerInfo = isValidSectionId ? (
       <span>
         <div className="flex gap-5">
           <button className="text-3xl" onClick={handleBacking}>
@@ -55,11 +61,16 @@ function Header() {
           </div>
         </div>
       </span>
+    ) : (
+      <div>
+        <h1>Error</h1>
+      </div>
     );
   }
 
   if (pageId) {
-    headerInfo = (
+    const isPageIdValid = state.pages.allIds.includes(pageId);
+    headerInfo = isPageIdValid ? (
       <span className="flex justify-between w-full">
         <button className="text-3xl" onClick={handleBacking}>
           {"<"}
@@ -69,6 +80,10 @@ function Header() {
           <button>redo</button>
         </span>
       </span>
+    ) : (
+      <div>
+        <h1>Error</h1>
+      </div>
     );
   }
 

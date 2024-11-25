@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
 function NotFound() {
+  const navigate = useNavigate();
   function goHome() {
-    useNavigate("/note-project-manager");
+    navigate("/note-project-manager");
   }
 
   return (

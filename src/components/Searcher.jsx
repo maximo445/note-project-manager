@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "./ContextProvider";
 import PropTypes from "prop-types";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook, faCircle, faFile } from "@fortawesome/free-solid-svg-icons";
+
 function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
   const [query, setQuery] = useState("");
   const { state } = useContext(Context);
@@ -38,7 +41,8 @@ function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
       );
 
       const notebookLinks = notebooksIds.map((id) => (
-        <li key={id}>
+        <li className="flex items-center gap-3" key={id}>
+          <FontAwesomeIcon icon={faBook} className="text-blue-600" />
           <button
             onClick={() =>
               goToSearchedItem(`/note-project-manager/notebook/${id}`)
@@ -62,7 +66,14 @@ function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
         }
 
         return (
-          <li key={`${noteBookId[0]}-${sectionId}`}>
+          <li
+            className="flex items-center gap-3"
+            key={`${noteBookId[0]}-${sectionId}`}
+          >
+            <FontAwesomeIcon
+              icon={faCircle}
+              className="text-yellow-500"
+            ></FontAwesomeIcon>
             <button
               onClick={() =>
                 goToSearchedItem(
@@ -76,8 +87,55 @@ function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
         );
       });
 
+      const pageLinks = pagesIds.map((pageId) => {
+        // Filter sections to find the one containing the current sectionId
+        const sectionId = sections.allIds.filter((id) => {
+          return sections.byId[id].pageIds.includes(pageId);
+        });
+
+        // Ensure noteBookId has at least one element
+        if (sectionId.length === 0) {
+          console.error(`No page found for sectionId: ${sectionId}`);
+          return null; // Return null or handle error appropriately
+        }
+
+        const noteBookId = notebooks.allIds.filter((id) => {
+          return notebooks.byId[id].sectionIds.includes(sectionId[0]);
+        });
+
+        if (noteBookId.length === 0) {
+          console.error(`No page found for sectionId: ${sectionId}`);
+          return null; // Return null or handle error appropriately
+        }
+
+        return (
+          <li
+            className="flex items-center gap-3"
+            key={`${sectionId[0]}-${pageId}`}
+          >
+            <FontAwesomeIcon
+              icon={faFile}
+              className="text-slate-600"
+            ></FontAwesomeIcon>
+            <button
+              onClick={() =>
+                goToSearchedItem(
+                  `/note-project-manager/notebook/${noteBookId[0]}/section/${sectionId}/page/${pageId}`
+                )
+              }
+            >
+              {pages.byId[pageId]?.title || "Untitled Page"}
+            </button>
+          </li>
+        );
+      });
+
       query.length > 0
-        ? handleSetSearchResults([...notebookLinks, ...sectionLinks])
+        ? handleSetSearchResults([
+            ...notebookLinks,
+            ...sectionLinks,
+            ...pageLinks,
+          ])
         : handleSetSearchResults([]);
     }
     processQuery();

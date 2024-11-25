@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "./ContextProvider";
 import EntityCreator from "./EntityCreator";
@@ -9,6 +9,22 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 function MyBook() {
   const { state } = useContext(Context);
   const { notebookId } = useParams();
+  const navigate = useNavigate();
+
+  function goHome() {
+    navigate("/note-project-manager");
+  }
+
+  if (!state.notebooks.allIds.includes(notebookId)) {
+    return (
+      <div>
+        <h1>
+          There is no notebook with id: <span>{notebookId}</span>
+        </h1>
+        <button onClick={goHome}>back</button>
+      </div>
+    );
+  }
 
   const project = state.notebooks.byId[notebookId];
 

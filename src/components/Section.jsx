@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "./ContextProvider";
 import EntityCreator from "./EntityCreator";
@@ -9,6 +9,26 @@ import { faFile } from "@fortawesome/free-solid-svg-icons";
 function Section() {
   const { state } = useContext(Context);
   const { sectionId, notebookId } = useParams();
+  const navigate = useNavigate();
+
+  function goHome() {
+    navigate("/note-project-manager");
+  }
+
+  if (
+    !state.sections.allIds.includes(sectionId) ||
+    !state.notebooks.allIds.includes(notebookId)
+  ) {
+    return (
+      <div>
+        <h1>
+          There is no such section:{" "}
+          <span>{`notebook/${notebookId}/section/${sectionId}`}</span>
+        </h1>
+        <button onClick={goHome}>back</button>
+      </div>
+    );
+  }
 
   const section = state.sections.byId[sectionId];
 
