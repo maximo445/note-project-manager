@@ -15,6 +15,32 @@ const notebooksReducer = produce((state, action) => {
       state.byId[notebookId].sectionIds.push(section.id);
       break;
     }
+    case "deleteNoteBook": {
+      const id = action.payLoad.notebookId;
+
+      // const sectionsToDelete = state.byId[id]?.sectionIds || [];
+
+      delete state.byId[id];
+      const indextToRemove = state.allIds.indexOf(id);
+      if (indextToRemove !== -1) {
+        state.allIds.splice(indextToRemove, 1);
+      }
+      break;
+    }
+    case "deleteSection":
+      {
+        const { sectionId, projectId } = action.payLoad;
+        // const pagesToDelete = state.byId[sectionId].pageIds || [];
+
+        const indexToRemove =
+          state.byId[projectId].sectionIds.indexOf(sectionId);
+
+        if (indexToRemove !== -1) {
+          state.byId[projectId].sectionIds.splice(indexToRemove, 1);
+        }
+      }
+      break;
+
     default:
       break;
   }
@@ -32,6 +58,34 @@ const sectionsReducer = produce((state, action) => {
         state.byId[sectionId].pageIds.push(page.id);
       }
       break;
+    case "deleteSections":
+      {
+        const { sectionIds } = action.payLoad;
+        sectionIds.forEach((sectionId) => {
+          // const pagesToDelete = state.byId[sectionId].pageIds || [];
+
+          delete state.byId[sectionId];
+          const indexToRemove = state.allIds.indexOf(sectionId);
+          if (indexToRemove !== -1) {
+            state.allIds.splice(sindexToRemove, 1);
+          }
+
+          // action.dispatch({
+          //   type: "deletePages",
+          //   payLoad: { pagesIds: pagesToDelete },
+          // });
+        });
+      }
+      break;
+    case "deletePage":
+      {
+        const { pageId, sectionId } = action.payload;
+        const indexToRemove = state.byId[sectionId].pageIds.indexOf(pageId);
+        if (indexToRemove !== -1) {
+          state.byId[sectionId].pageIds.splice(indexToRemove, 1);
+        }
+      }
+      break;
     default:
       break;
   }
@@ -43,14 +97,38 @@ const pagesReducer = produce((state, action) => {
       state.byId[action.payLoad.page.id] = action.payLoad.page;
       state.allIds.push(action.payLoad.page.id);
       break;
+    case "deletePages":
+      {
+        const { pagesIds } = action.payLoad;
+        pagesIds.forEach((pageId) => {
+          delete state.byId[pageId];
+          const indexToRemove = state.allIds.indexOf(pageId);
+          if (indexToRemove !== -1) {
+            state.allIds.splice(indexToRemove, 1);
+          }
+        });
+      }
+      break;
+    case "deletePage":
+      {
+        const { pageId } = action.payload;
+        delete state.byId[pageId];
+      }
+      break;
     default:
       break;
   }
 });
 
 const rootReducer = (state, action) => ({
-  notebooks: notebooksReducer(state.notebooks, action),
-  sections: sectionsReducer(state.sections, action),
+  notebooks: notebooksReducer(state.notebooks, {
+    ...action,
+    dispatch: action.dispatch,
+  }),
+  sections: sectionsReducer(state.sections, {
+    ...action,
+    dispatch: action.dispatch,
+  }),
   pages: pagesReducer(state.pages, action),
 });
 
@@ -95,42 +173,6 @@ if (!localStorageState)
   );
 
 const initialState = JSON.parse(localStorage.getItem("state"));
-
-// !localStorageState
-//   ? (initialState = {
-//       notebooks: {
-//         byId: {
-//           987: {
-//             id: "987",
-//             title: "tempNoteBook",
-//             sectionIds: ["123"], // References to sections
-//           },
-//         },
-//         allIds: ["987"], // Keeps track of all notebook IDs
-//       },
-//       sections: {
-//         byId: {
-//           123: {
-//             id: "123",
-//             title: "testSection",
-//             pageIds: ["456"], // References to pages
-//           },
-//         },
-//         allIds: ["123"], // Keeps track of all section IDs
-//       },
-//       pages: {
-//         byId: {
-//           456: {
-//             id: "456",
-//             title: "tempPage",
-//             createdAt: "11/18/2024",
-//             body: "My first publication. Lorem Ipsum. I dont beleive in defeat!",
-//           },
-//         },
-//         allIds: [456], // Keeps track of all page IDs
-//       },
-//     })
-//   : (initialState = JSON.parse(localStorageState));
 
 function ContextProvider({ children }) {
   const [state, dispatch] = useReducer(rootReducer, initialState);

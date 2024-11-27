@@ -7,9 +7,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
 function MyBook() {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const { notebookId } = useParams();
   const navigate = useNavigate();
+
+  function handleSectionDeletion(sectionId, projectId, state, dispatch) {
+    const pagesToDelete = state.sections.byId[notebookId]?.pageIds || [];
+
+    // Dispatch notebook deletion
+    dispatch({ type: "deleteSection", payLoad: { sectionId, projectId } });
+
+    // Dispatch section deletions
+    if (pagesToDelete.length > 0) {
+      dispatch({
+        type: "deletePages",
+        payLoad: { pagesdIds: pagesToDelete },
+      });
+    }
+  }
 
   function goHome() {
     navigate("/note-project-manager");
@@ -39,6 +54,11 @@ function MyBook() {
         <Link to={`/note-project-manager/notebook/${notebookId}/section/${id}`}>
           {section.title}
         </Link>
+        <button
+          onClick={() => handleSectionDeletion(id, notebookId, state, dispatch)}
+        >
+          x
+        </button>
       </li>
     );
   });

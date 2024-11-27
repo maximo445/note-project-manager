@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 
 function Section() {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const { sectionId, notebookId } = useParams();
   const navigate = useNavigate();
 
@@ -42,6 +42,13 @@ function Section() {
         >
           {page.title}
         </Link>
+        <button
+          onClick={() =>
+            dispatch({ type: "deletePage", payload: { pageId: id, sectionId } })
+          }
+        >
+          x
+        </button>
       </li>
     );
   });
