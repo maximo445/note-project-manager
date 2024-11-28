@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Context } from "./ContextProvider";
 import EntityCreator from "./EntityCreator";
 
@@ -10,6 +10,15 @@ function MyBook() {
   const { state, dispatch } = useContext(Context);
   const { notebookId } = useParams();
   const navigate = useNavigate();
+  const limit = useRef(true);
+
+  useEffect(() => {
+    if (state.notebooks.allIds.includes(notebookId) === false) {
+      navigate(`/note-project-manager/error`);
+    } else {
+      limit.current = state.notebooks.byId[notebookId].sectionIds.length < 10;
+    }
+  }, [notebookId, navigate, state.notebooks.allIds, state, dispatch]);
 
   function handleSectionDeletion(sectionId, projectId, state, dispatch) {
     const pagesToDelete = state.sections.byId[notebookId]?.pageIds || [];
@@ -24,21 +33,6 @@ function MyBook() {
         payLoad: { pagesdIds: pagesToDelete },
       });
     }
-  }
-
-  function goHome() {
-    navigate("/note-project-manager");
-  }
-
-  if (!state.notebooks.allIds.includes(notebookId)) {
-    return (
-      <div>
-        <h1>
-          There is no notebook with id: <span>{notebookId}</span>
-        </h1>
-        <button onClick={goHome}>back</button>
-      </div>
-    );
   }
 
   const project = state.notebooks.byId[notebookId];
@@ -70,7 +64,13 @@ function MyBook() {
       </div>
       <div className="h-[calc(100vh-114px)] flex flex-col justify-between pt-8">
         <ul className="flex flex-col gap-3 pl-10">{sections}</ul>
-        <EntityCreator type={"section"} />
+        {limit.current ? (
+          <EntityCreator type={"section"} />
+        ) : (
+          <button className="flex justify-center items-center bg-slate-600 w-full p-5 pb-20 sm:pb-5 rounded-t-2xl translate-y-1 text-slate-50">
+            Limit of Sections Reached
+          </button>
+        )}
       </div>
     </div>
   );

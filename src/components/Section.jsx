@@ -19,6 +19,7 @@ function Section() {
     !state.sections.allIds.includes(sectionId) ||
     !state.notebooks.allIds.includes(notebookId)
   ) {
+    navigate("*");
     return (
       <div>
         <h1>
@@ -29,6 +30,8 @@ function Section() {
       </div>
     );
   }
+
+  const limit = state.sections.byId[sectionId].pageIds.length < 10;
 
   const section = state.sections.byId[sectionId];
 
@@ -62,7 +65,13 @@ function Section() {
       </div>
       <div className="h-[calc(100vh-114px)] flex flex-col justify-between pt-8">
         <ul className="flex flex-col gap-3 pl-10">{pages}</ul>
-        <EntityCreator type="page" />
+        {limit ? (
+          <EntityCreator type={"page"} />
+        ) : (
+          <button className="flex justify-center items-center bg-slate-600 w-full p-5 pb-20 sm:pb-5 rounded-t-2xl translate-y-1 text-slate-50">
+            Limit of Pages Reached
+          </button>
+        )}
       </div>
     </div>
   );

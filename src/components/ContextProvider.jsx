@@ -62,18 +62,11 @@ const sectionsReducer = produce((state, action) => {
       {
         const { sectionIds } = action.payLoad;
         sectionIds.forEach((sectionId) => {
-          // const pagesToDelete = state.byId[sectionId].pageIds || [];
-
           delete state.byId[sectionId];
           const indexToRemove = state.allIds.indexOf(sectionId);
           if (indexToRemove !== -1) {
-            state.allIds.splice(sindexToRemove, 1);
+            state.allIds.splice(indexToRemove, 1);
           }
-
-          // action.dispatch({
-          //   type: "deletePages",
-          //   payLoad: { pagesIds: pagesToDelete },
-          // });
         });
       }
       break;

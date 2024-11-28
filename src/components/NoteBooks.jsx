@@ -8,6 +8,7 @@ import { faBook } from "@fortawesome/free-solid-svg-icons";
 
 function NoteBooks() {
   const { state, dispatch } = useContext(Context);
+  const limit = state.notebooks.allIds.length < 10;
 
   function handleNotebookDeletion(notebookId, state, dispatch) {
     const sectionsToDelete = state.notebooks.byId[notebookId]?.sectionIds || [];
@@ -56,7 +57,13 @@ function NoteBooks() {
     <div className="h-[calc(100vh-80px)] flex flex-col justify-between pt-8">
       {/* <Outlet /> */}
       <ul className="flex flex-col gap-3 pl-10">{notebooks}</ul>
-      <EntityCreator type={"notebook"} />
+      {limit ? (
+        <EntityCreator type={"notebook"} />
+      ) : (
+        <button className="flex justify-center items-center bg-slate-600 w-full p-5 pb-20 sm:pb-5 rounded-t-2xl translate-y-1 text-slate-50">
+          Limit of Notebooks Reached
+        </button>
+      )}
     </div>
   );
 }

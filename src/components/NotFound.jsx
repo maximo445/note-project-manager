@@ -7,8 +7,8 @@ function NotFound() {
   }
 
   return (
-    <div>
-      <h1>404 Not Found</h1>
+    <div className="w-full h-full flex justify-center items-center text-slate-900">
+      <h1 className="">404 Not Found</h1>
       <button onClick={goHome}>Return Home</button>
     </div>
   );

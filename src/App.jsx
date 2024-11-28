@@ -24,6 +24,7 @@ function App() {
             element={<Page />}
           />
           <Route path="*" element={<NotFound />} />
+          <Route path="error" element={<NotFound />} />
         </Route>
       </Routes>
     </ContextProvider>

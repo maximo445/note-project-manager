@@ -28,17 +28,28 @@ function Searcher({ handleSetIsSearching, handleSetSearchResults }) {
     const pages = state.pages;
 
     function processQuery() {
-      const notebooksIds = notebooks.allIds.filter((id) =>
-        notebooks.byId[id].title.toLowerCase().includes(query.toLowerCase())
-      );
+      const notebooksIds = notebooks.allIds.filter((id) => {
+        return (
+          notebooks.byId[id]?.title
+            .toLowerCase()
+            .includes(query.toLowerCase()) || false
+        );
+      });
 
-      const sectionsIds = sections.allIds.filter((id) =>
-        sections.byId[id].title.toLowerCase().includes(query.toLowerCase())
-      );
+      const sectionsIds = sections.allIds.filter((id) => {
+        return (
+          sections.byId[id]?.title
+            .toLowerCase()
+            .includes(query.toLowerCase()) || false
+        );
+      });
 
-      const pagesIds = pages.allIds.filter((id) =>
-        pages.byId[id].title.toLowerCase().includes(query.toLowerCase())
-      );
+      const pagesIds = pages.allIds.filter((id) => {
+        return (
+          pages.byId[id]?.title.toLowerCase().includes(query.toLowerCase()) ||
+          false
+        );
+      });
 
       const notebookLinks = notebooksIds.map((id) => (
         <li className="flex items-center gap-3" key={id}>

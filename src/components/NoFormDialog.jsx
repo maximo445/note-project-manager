@@ -41,11 +41,17 @@ function NoFormDialog({
         )}
         <div className="flex justify-end gap-3 w-full ">
           <button onClick={closeDialog} type="button">
-            <p className="text-sm">CANCEL</p>
+            <p className="text-purple-400 text-sm">CANCEL</p>
           </button>
-          <button onClick={createEntity} type="submit">
-            <p className="text-sm">CREATE</p>
-          </button>
+          {!entityName.length < 1 ? (
+            <button onClick={createEntity} type="submit">
+              <p className="text-purple-400 text-sm">CREATE</p>
+            </button>
+          ) : (
+            <button type="submit">
+              <p className="text-sm">CREATE</p>
+            </button>
+          )}
         </div>
       </div>
     </dialog>,
